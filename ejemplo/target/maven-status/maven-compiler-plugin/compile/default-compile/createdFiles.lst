@@ -1,0 +1,8 @@
+paquete\app\App.class
+paquete\app\AbstracAppModel.class
+paquete\app\Entity.class
+paquete\app\Province.class
+paquete\app\AbstractLocation.class
+paquete\app\EntityType.class
+paquete\app\JsonLoader.class
+paquete\app\Municipality.class
