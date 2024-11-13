@@ -8,7 +8,7 @@ public class Search {
 
     final static JsonLoader loader = new JsonLoader();
 
-    final static boolean loaded = loader.loadData("./assets/anime-offline-database-minified.json");
+    final static boolean loaded = loader.loadData("anime_library\\assets\\anime-offline-database-minified.json");
 
     /**
      * Aplicacion que busca animes por consola
@@ -80,81 +80,76 @@ public class Search {
     }
 
     private static void caseCriteria(Library l, Scanner scan) {
-
         System.out.println(
-                "\nRealiza una busqueda ingresando los criterios deseado - Search a list of anime that matches with the criteria\n");
+                "\nRealiza una búsqueda ingresando los criterios deseados - Search a list of anime that matches with the criteria");
         System.out.println(
-                "Puedes poner un limite de animes que seran mostrados con el comando 'limit' - You can put a limit of animes that will be show witn the command 'limit'\n");
-        System.out.println("Cuando este listo use 'Search' para buscar - When you're ready use 'Search' for search");
+                "Puedes poner un límite de animes que serán mostrados con el comando 'limit' - You can put a limit of animes that will be shown with the command 'limit'");
+        System.out.println("Cuando esté listo use 'Search' para buscar - When you're ready, use 'Search' to search");
 
         String str;
+        Type typeSearch = null;
+        int yearSearch = 0;
+        Season seasonSearch = null;
+        Status statusSearch = null;
+        String[] tagsSearch = new String[0];
+        int limit = 0;
 
         do {
-
+            System.out.print("Ingrese un criterio (type, status, season, year, tags, limit) o 'search' para buscar: ");
             str = scan.nextLine();
 
-            Type typeSearch = null;
-
-            int yearSearch = 0;
-
-            Season seasonSearch = null;
-
-            Status statusSearch = null;
-
-            String[] tagsSearch = new String[0];
-
-            int limit = 0;
-
-            while (!str.equalsIgnoreCase("search") && !str.equalsIgnoreCase("back")) {
-
-                String[] strSplit = str.split(" ");
-
-                if (strSplit[0].equalsIgnoreCase("type")) {
-
+            String[] strSplit = str.split(" ");
+            switch (strSplit[0].toLowerCase()) {
+                case "type":
+                    System.out.print("Type (e.g., TV, MOVIE): ");
                     typeSearch = Type(strSplit);
-                } else if (strSplit[0].equalsIgnoreCase("year")) {
-
+                    break;
+                case "year":
+                    System.out.print("Year (e.g., 2002): ");
                     yearSearch = Year(strSplit);
-                } else if (strSplit[0].equalsIgnoreCase("season")) {
-
+                    break;
+                case "season":
+                    System.out.print("Season (e.g., FALL, WINTER): ");
                     seasonSearch = Season(strSplit);
-                } else if (strSplit[0].equalsIgnoreCase("status")) {
-
+                    break;
+                case "status":
+                    System.out.print("Status (e.g., FINISHED, ONGOING): ");
                     statusSearch = Status(strSplit);
-                } else if (strSplit[0].equalsIgnoreCase("tags")) {
-
+                    break;
+                case "tags":
+                    System.out.print("Tags (e.g., Action, Adventure): ");
                     tagsSearch = Tags(strSplit);
-                } else if (strSplit[0].equalsIgnoreCase("limit")) {
-
+                    break;
+                case "limit":
+                    System.out.print("Limit (e.g., 5): ");
                     limit = Integer.parseInt(strSplit[1]);
-                }
-
-                str = scan.nextLine();
+                    break;
+                default:
+                    if (!str.equalsIgnoreCase("search") && !str.equalsIgnoreCase("back")) {
+                        System.out.println("Criterio no válido. Intente nuevamente.");
+                    }
+                    break;
             }
+        } while (!str.equalsIgnoreCase("search") && !str.equalsIgnoreCase("back"));
 
-            List<Anime> searchResult = l.takeAnimeList(typeSearch, seasonSearch, yearSearch, statusSearch,
-                    tagsSearch);
+        List<Anime> searchResult = l.takeAnimeList(typeSearch, seasonSearch, yearSearch, statusSearch, tagsSearch);
+        if (limit > 0) {
+            searchResult = searchResult.subList((int) (Math.random() * 10), Math.min(limit, searchResult.size()));
+        }
 
-            if (limit > 0) {
-
-                searchResult = searchResult.subList((int) Math.random() * 10, Math.min(limit, searchResult.size()));
-            }
-
-            System.out.println();
-
-            for (Anime anime : searchResult) {
-
-                System.out.println(anime.toString() + "\n");
-            }
-
-        } while (!str.equalsIgnoreCase("back"));
+        System.out.println();
+        for (Anime anime : searchResult) {
+            System.out.println(anime.toString() + "\n");
+        }
     }
 
     private static void caseTitle(Library l, Scanner scan) {
         System.out.println(
-                "\nRealiza una busqueda ingresando el titulo deseado - Search an anime that matches with a title\n");
+                "\nRealiza una búsqueda ingresando el título deseado - Search an anime that matches with a title");
+        System.out.print("Title: ");
+        String title = scan.nextLine();
 
-        List<Anime> animeListB = l.takeAnimeEqualTitle(scan.nextLine());
+        List<Anime> animeListB = l.takeAnimeEqualTitle(title);
         System.out.println();
         for (Anime animeB : animeListB) {
             System.out.println(animeB.toString() + "\n");

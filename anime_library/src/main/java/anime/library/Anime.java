@@ -1,5 +1,7 @@
 package anime.library;
 
+import java.util.Arrays;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 enum Type {
@@ -101,7 +103,7 @@ public class Anime {
         return "Title: " + title + " " + "\nType: " + type + " " + "\nStatus: " + status + " " + "\nEpisodes: "
                 + episodes
                 + " " + "\nYear: " + animeSeason.getYear() + " " + "\nSeason: "
-                + animeSeason.getSeason() + "\nTags: " + tags;
+                + animeSeason.getSeason() + "\nTags: " + Arrays.toString(tags);
     }
 
     @Override
